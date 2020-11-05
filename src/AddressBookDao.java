@@ -3,10 +3,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 
 public class AddressBookDao {
 	HashMap <String, PersonEntity> contactList = new HashMap<String, PersonEntity>();
+	HashMap <String, PersonEntity> cityDictionary = new HashMap<String, PersonEntity>();
+	HashMap <String, PersonEntity> stateDictionary = new HashMap<String, PersonEntity>();
+	
 	Scanner scanner = new Scanner(System.in);
 	
 	public void getUserChoice() {
@@ -17,14 +19,19 @@ public class AddressBookDao {
 				"2: Update contact \n" +
 				"3: Delete contact \n" +
 				"4: Search contacts by city \n" +
-				"5: Print address book \n"+
-				"6: Exit \n");
+				"5: Search contacts by state \n" +
+				"6: View contacts by city \n" +
+				"7: View contacts by state \n" +
+				"8: Print address book \n"+
+				"9: Exit \n");
 		int option = scanner.nextInt();
 		switch(option) {
 			case 1:
 				PersonEntity person = getUserInput();
 				if(person != null) {
 				contactList.put(person.getEmailId(), person);
+				cityDictionary.put(person.getCity(), person);
+				stateDictionary.put(person.getState(), person);
 		 		System.out.println("Contact added !");
 				}
 		 		break;
@@ -38,9 +45,18 @@ public class AddressBookDao {
 				searchByCity();
 				break;
 			case 5:
-				System.out.println(contactList);
+				seachByState();
 				break;
 			case 6:
+				System.out.println(cityDictionary);
+				break;
+			case 7:
+				System.out.println(stateDictionary);
+				break;
+			case 8:
+				System.out.println(contactList);
+				break;
+			case 9:
 				isTerminate = true;
 				break;
 			default:
@@ -50,6 +66,27 @@ public class AddressBookDao {
 		}
 	}
 	
+	private void seachByState() {
+		System.out.println("Enter state name to search with ");
+		String state = scanner.next();
+		
+		Iterator iterator = contactList.entrySet().iterator();
+		while (iterator.hasNext()) { 
+			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
+			PersonEntity person = mapElement.getValue();
+			if(state.equalsIgnoreCase(person.getState())){
+				System.out.println("FirstName =" + person.getFirstName() +
+			", lastName = " + person.getLastName() + 
+			", address = " + person.getAddress() + 
+			", city = " + person.getCity() +
+			", state = " + person.getState() + 
+			", zip = " + person.getZip() + 
+			", phoneNumber = " + person.getPhoneNumber() + 
+			", email = " + person.getEmailId()+"\n\n");
+			}
+		}
+	}
+
 	private void searchByCity() {
 		System.out.println("Enter city name to search with ");
 		String city = scanner.next();
@@ -195,4 +232,3 @@ public class AddressBookDao {
 		return person;
 	}
 }
-
