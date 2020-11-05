@@ -11,8 +11,9 @@ public class AddressBookDao {
 		System.out.println("Enter your option");
 		System.out.println("1: Add new contact \n" +
 				"2: Update contact \n" +
-				"3: Print address book \n"+
-				"4: Exit \n");
+				"3: Delete contact \n" +
+				"4: Print address book \n"+
+				"5: Exit \n");
 		int option = scanner.nextInt();
 		switch(option) {
 			case 1:
@@ -24,9 +25,12 @@ public class AddressBookDao {
 				updateContact();
                 break;
 			case 3:
-				System.out.println(contactList);
+				deleteContact();
 				break;
 			case 4:
+				System.out.println(contactList);
+				break;
+			case 5:
 				isTerminate = true;
 				break;
 			default:
@@ -36,6 +40,17 @@ public class AddressBookDao {
 		}
 	}
 	
+	private void deleteContact() {
+        System.out.println("Enter EmailId to delete");
+        String emailId = scanner.next();
+        if (!contactList.containsKey(emailId)) {
+            System.out.println("Provided email Id is not found");
+            deleteContact();
+        }
+        contactList.remove(emailId);
+        System.out.println("Contact deleted !");
+    }
+
 	private void updateContact() {
 		System.out.println("Enter emailId to update");
 		String emailId = scanner.next();
