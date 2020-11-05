@@ -1,4 +1,3 @@
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -116,14 +115,12 @@ public class AddressBookDao {
 	}
 
 	private boolean duplicateCheck(String emailId) {
-		Stream<Object> key = contactList.entrySet().stream()
-				.filter( map -> map.getKey() == emailId)
-				.map(Map.Entry::getKey);
-		if(key == null)
-			return true;
-		return false;
-	}
-	
+		Optional<String> key = contactList.entrySet().stream()
+				.filter( map -> map.getKey().equals(emailId))
+				.map(Map.Entry::getKey).findAny();
+				return(key.isPresent());
+	}	
+
 	private void deleteContact() {
         System.out.println("Enter EmailId to delete");
         String emailId = scanner.next();
