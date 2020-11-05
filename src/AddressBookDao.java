@@ -1,5 +1,9 @@
+package com.addressbookmanagement;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class AddressBookDao {
 	HashMap <String, PersonEntity> contactList = new HashMap<String, PersonEntity>();
@@ -12,8 +16,9 @@ public class AddressBookDao {
 		System.out.println("1: Add new contact \n" +
 				"2: Update contact \n" +
 				"3: Delete contact \n" +
-				"4: Print address book \n"+
-				"5: Exit \n");
+				"4: Search contacts by city \n" +
+				"5: Print address book \n"+
+				"6: Exit \n");
 		int option = scanner.nextInt();
 		switch(option) {
 			case 1:
@@ -30,9 +35,12 @@ public class AddressBookDao {
 				deleteContact();
 				break;
 			case 4:
-				System.out.println(contactList);
+				searchByCity();
 				break;
 			case 5:
+				System.out.println(contactList);
+				break;
+			case 6:
 				isTerminate = true;
 				break;
 			default:
@@ -42,6 +50,27 @@ public class AddressBookDao {
 		}
 	}
 	
+	private void searchByCity() {
+		System.out.println("Enter city name to search with ");
+		String city = scanner.next();
+		
+		Iterator iterator = contactList.entrySet().iterator();
+		while (iterator.hasNext()) { 
+			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
+			PersonEntity person = mapElement.getValue();
+			if(city.equalsIgnoreCase(person.getCity())){
+				System.out.println("FirstName =" + person.getFirstName() +
+			", lastName = " + person.getLastName() + 
+			", address = " + person.getAddress() + 
+			", city = " + person.getCity() +
+			", state = " + person.getState() + 
+			", zip = " + person.getZip() + 
+			", phoneNumber = " + person.getPhoneNumber() + 
+			", email = " + person.getEmailId()+"\n\n");
+			}
+		}
+	}
+
 	private boolean duplicateCheck(String emailId) {
 		if(contactList.containsKey(emailId))
 			return true;
@@ -166,3 +195,4 @@ public class AddressBookDao {
 		return person;
 	}
 }
+
