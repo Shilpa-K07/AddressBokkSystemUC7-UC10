@@ -1,7 +1,11 @@
+
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class AddressBookDao {
 	HashMap <String, PersonEntity> contactList = new HashMap<String, PersonEntity>();
@@ -70,7 +74,6 @@ public class AddressBookDao {
 		String state = scanner.next();
 		int personCount = 0;
 		Iterator iterator = contactList.entrySet().iterator();
-
 		while (iterator.hasNext()) { 
 			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
 			PersonEntity person = mapElement.getValue();
@@ -94,7 +97,6 @@ public class AddressBookDao {
 		String city = scanner.next();
 		int personCount = 0;
 		Iterator iterator = contactList.entrySet().iterator();
-
 		while (iterator.hasNext()) { 
 			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
 			PersonEntity person = mapElement.getValue();
@@ -114,7 +116,10 @@ public class AddressBookDao {
 	}
 
 	private boolean duplicateCheck(String emailId) {
-		if(contactList.containsKey(emailId))
+		Stream<Object> key = contactList.entrySet().stream()
+				.filter( map -> map.getKey() == emailId)
+				.map(Map.Entry::getKey);
+		if(key == null)
 			return true;
 		return false;
 	}
