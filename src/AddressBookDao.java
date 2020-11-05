@@ -18,8 +18,10 @@ public class AddressBookDao {
 		switch(option) {
 			case 1:
 				PersonEntity person = getUserInput();
+				if(person != null) {
 				contactList.put(person.getEmailId(), person);
 		 		System.out.println("Contact added !");
+				}
 		 		break;
 			case 2:
 				updateContact();
@@ -38,6 +40,12 @@ public class AddressBookDao {
 				break;
 			}
 		}
+	}
+	
+	private boolean duplicateCheck(String emailId) {
+		if(contactList.containsKey(emailId))
+			return true;
+		return false;
 	}
 	
 	private void deleteContact() {
@@ -139,6 +147,12 @@ public class AddressBookDao {
 		System.out.println("Enter Email Id");
 		String emailId = scanner.next();
 		
+		boolean result = duplicateCheck(emailId);
+		if(result) {
+			System.out.println("\nContact with this email is already exists"
+					+ " in this address book");
+			return null;
+		}
 		PersonEntity person = new PersonEntity();
 		person.setFirstName(firstName);
 		person.setLastName(lastName);
@@ -148,7 +162,7 @@ public class AddressBookDao {
 		person.setState(state);
 		person.setPhoneNumber(phone);
 		person.setEmailId(emailId);
-
+		
 		return person;
 	}
 }
