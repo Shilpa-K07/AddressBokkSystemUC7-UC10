@@ -1,4 +1,3 @@
-package com.addressbookmanagement;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -69,12 +68,14 @@ public class AddressBookDao {
 	private void seachByState() {
 		System.out.println("Enter state name to search with ");
 		String state = scanner.next();
-		
+		int personCount = 0;
 		Iterator iterator = contactList.entrySet().iterator();
+
 		while (iterator.hasNext()) { 
 			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
 			PersonEntity person = mapElement.getValue();
 			if(state.equalsIgnoreCase(person.getState())){
+				personCount++;
 				System.out.println("FirstName =" + person.getFirstName() +
 			", lastName = " + person.getLastName() + 
 			", address = " + person.getAddress() + 
@@ -82,20 +83,23 @@ public class AddressBookDao {
 			", state = " + person.getState() + 
 			", zip = " + person.getZip() + 
 			", phoneNumber = " + person.getPhoneNumber() + 
-			", email = " + person.getEmailId()+"\n\n");
+			", email = " + person.getEmailId());
 			}
 		}
+		System.out.println("\nNumber of contacts in "+state+" state is :"+personCount);
 	}
 
 	private void searchByCity() {
 		System.out.println("Enter city name to search with ");
 		String city = scanner.next();
-		
+		int personCount = 0;
 		Iterator iterator = contactList.entrySet().iterator();
+
 		while (iterator.hasNext()) { 
 			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
 			PersonEntity person = mapElement.getValue();
 			if(city.equalsIgnoreCase(person.getCity())){
+				personCount++;
 				System.out.println("FirstName =" + person.getFirstName() +
 			", lastName = " + person.getLastName() + 
 			", address = " + person.getAddress() + 
@@ -103,9 +107,10 @@ public class AddressBookDao {
 			", state = " + person.getState() + 
 			", zip = " + person.getZip() + 
 			", phoneNumber = " + person.getPhoneNumber() + 
-			", email = " + person.getEmailId()+"\n\n");
+			", email = " + person.getEmailId());
 			}
 		}
+		System.out.println("Number of contacts in "+city+" city is : "+personCount);
 	}
 
 	private boolean duplicateCheck(String emailId) {
