@@ -1,3 +1,4 @@
+package com.addressbookmanagement;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -70,7 +71,6 @@ public class AddressBookDao {
 		String state = scanner.next();
 		int personCount = 0;
 		Iterator iterator = contactList.entrySet().iterator();
-
 		while (iterator.hasNext()) { 
 			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
 			PersonEntity person = mapElement.getValue();
@@ -94,7 +94,6 @@ public class AddressBookDao {
 		String city = scanner.next();
 		int personCount = 0;
 		Iterator iterator = contactList.entrySet().iterator();
-
 		while (iterator.hasNext()) { 
 			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
 			PersonEntity person = mapElement.getValue();
