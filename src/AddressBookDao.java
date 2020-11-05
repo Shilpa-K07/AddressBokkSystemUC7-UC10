@@ -1,8 +1,12 @@
-package com.addressbookmanagement;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.stream.Collectors; 
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class AddressBookDao {
 	HashMap <String, PersonEntity> contactList = new HashMap<String, PersonEntity>();
@@ -69,53 +73,41 @@ public class AddressBookDao {
 	private void seachByState() {
 		System.out.println("Enter state name to search with ");
 		String state = scanner.next();
-		int personCount = 0;
-		Iterator iterator = contactList.entrySet().iterator();
-		while (iterator.hasNext()) { 
-			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
-			PersonEntity person = mapElement.getValue();
-			if(state.equalsIgnoreCase(person.getState())){
-				personCount++;
-				System.out.println("FirstName =" + person.getFirstName() +
-			", lastName = " + person.getLastName() + 
-			", address = " + person.getAddress() + 
-			", city = " + person.getCity() +
-			", state = " + person.getState() + 
-			", zip = " + person.getZip() + 
-			", phoneNumber = " + person.getPhoneNumber() + 
-			", email = " + person.getEmailId());
-			}
-		}
-		System.out.println("\nNumber of contacts in "+state+" state is :"+personCount);
+		
+		List<PersonEntity> personList = contactList.entrySet().stream()
+				.filter( map -> map.getValue().getState().equals(state))
+				.map(Map.Entry::getValue)
+				.collect(Collectors.toList());
+		System.out.println(personList);
+		int personCount = contactList.entrySet().stream()
+				.filter( map -> map.getValue().getState().equals(state))
+				.map(Map.Entry::getValue)
+				.collect(Collectors.toList()).size();
+		System.out.println("Number of contacts in "+state+" state is: "+personCount);
 	}
 
 	private void searchByCity() {
 		System.out.println("Enter city name to search with ");
 		String city = scanner.next();
-		int personCount = 0;
-		Iterator iterator = contactList.entrySet().iterator();
-		while (iterator.hasNext()) { 
-			Map.Entry<String, PersonEntity> mapElement = (Map.Entry)iterator.next(); 
-			PersonEntity person = mapElement.getValue();
-			if(city.equalsIgnoreCase(person.getCity())){
-				personCount++;
-				System.out.println("FirstName =" + person.getFirstName() +
-			", lastName = " + person.getLastName() + 
-			", address = " + person.getAddress() + 
-			", city = " + person.getCity() +
-			", state = " + person.getState() + 
-			", zip = " + person.getZip() + 
-			", phoneNumber = " + person.getPhoneNumber() + 
-			", email = " + person.getEmailId());
-			}
-		}
-		System.out.println("Number of contacts in "+city+" city is : "+personCount);
+		
+		List<PersonEntity> personList = contactList.entrySet().stream()
+				.filter( map -> map.getValue().getCity().equals(city))
+				.map(Map.Entry::getValue)
+				.collect(Collectors.toList());
+		System.out.println(personList);
+		int personCount = contactList.entrySet().stream()
+				.filter( map -> map.getValue().getCity().equals(city))
+				.map(Map.Entry::getValue)
+				.collect(Collectors.toList()).size();
+		System.out.println("Number of contacts in "+city+" city is: "+personCount);
 	}
 
 	private boolean duplicateCheck(String emailId) {
-		if(contactList.containsKey(emailId))
-			return true;
-		return false;
+		Optional<String> key = contactList.entrySet().stream()
+				.filter( map -> map.getKey().equals(emailId))
+				.map(Map.Entry::getKey).findAny();
+		boolean result = key.isPresent();
+		return result;
 	}
 	
 	private void deleteContact() {
