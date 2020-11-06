@@ -28,8 +28,11 @@ public class AddressBookDao {
 				"6: View contacts by city \n" +
 				"7: View contacts by state \n" +
 				"8: Sort by name \n" +
-				"9: Print address book \n"+
-				"10: Exit \n");
+				"9: Sort by city \n" +
+				"10: Sort by state \n" +
+				"11: Sort by zip \n" +
+				"12: Print address book \n"+
+				"13: Exit \n");
 		int option = scanner.nextInt();
 		switch(option) {
 			case 1:
@@ -63,9 +66,18 @@ public class AddressBookDao {
 				sortByName();
 				break;
 			case 9:
-				System.out.println(contactList);
+				sortByCity();
 				break;
 			case 10:
+				sortByState();
+				break;
+			case 11:
+				sortByZip();
+				break;
+			case 12:
+				System.out.println(contactList);
+				break;
+			case 13:
 				isTerminate = true;
 				break;
 			default:
@@ -75,6 +87,33 @@ public class AddressBookDao {
 		}
 	}
 	
+	private void sortByState() {
+		Map<String,PersonEntity> sortedNewMap = contactList.entrySet().stream()
+				.sorted((element1,element2)->element1.getValue().getState().compareTo(element2.getValue().getState()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+					(element1, element2) -> element1, LinkedHashMap::new));
+		System.out.println("\nAfter sorting by state: ");
+		System.out.println(sortedNewMap);
+	}
+
+	private void sortByCity() {
+		Map<String,PersonEntity> sortedNewMap = contactList.entrySet().stream()
+				.sorted((element1,element2)->element1.getValue().getCity().compareTo(element2.getValue().getCity()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+					(element1, element2) -> element1, LinkedHashMap::new));
+		System.out.println("\nAfter sorting by city: ");
+		System.out.println(sortedNewMap);
+	}
+
+	private void sortByZip() {
+		Map<String,PersonEntity> sortedNewMap = contactList.entrySet().stream()
+				.sorted((element1,element2)->element1.getValue().getZip()-(element2.getValue().getZip()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+					(element1, element2) -> element1, LinkedHashMap::new));
+		System.out.println("\nAfter sorting by zip: ");
+		System.out.println(sortedNewMap);
+	}
+
 	private void sortByName() {
 		Map<String,PersonEntity> sortedNewMap = contactList.entrySet().stream()
 				.sorted((element1,element2)->element1.getValue().getFirstName().compareTo(element2.getValue().getFirstName()))
