@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.stream.Collectors; 
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,9 @@ public class AddressBookDao {
 				"5: Search contacts by state \n" +
 				"6: View contacts by city \n" +
 				"7: View contacts by state \n" +
-				"8: Print address book \n"+
-				"9: Exit \n");
+				"8: Sort by name \n" +
+				"9: Print address book \n"+
+				"10: Exit \n");
 		int option = scanner.nextInt();
 		switch(option) {
 			case 1:
@@ -58,9 +60,12 @@ public class AddressBookDao {
 				System.out.println(stateDictionary);
 				break;
 			case 8:
-				System.out.println(contactList);
+				sortByName();
 				break;
 			case 9:
+				System.out.println(contactList);
+				break;
+			case 10:
 				isTerminate = true;
 				break;
 			default:
@@ -70,6 +75,15 @@ public class AddressBookDao {
 		}
 	}
 	
+	private void sortByName() {
+		Map<String,PersonEntity> sortedNewMap = contactList.entrySet().stream()
+				.sorted((element1,element2)->element1.getValue().getFirstName().compareTo(element2.getValue().getFirstName()))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
+					(element1, element2) -> element1, LinkedHashMap::new));
+		System.out.println("\nAfter sorting by name: ");
+		System.out.println(sortedNewMap);
+	}
+
 	private void seachByState() {
 		System.out.println("Enter state name to search with ");
 		String state = scanner.next();
